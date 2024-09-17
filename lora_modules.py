@@ -1,6 +1,5 @@
 import torch
 from torch import nn, Tensor
-from collections import OrderedDict
 
 
 class LoRALinear(nn.Module):
@@ -89,6 +88,7 @@ class LoRALinear(nn.Module):
             x = torch.matmul(x, self.base_module.weight.T)
             if 'bias' in self.base_module.state_dict().keys():
                 x += self.base_module.bias
+
         else:
             assert self.base_module is not None, 'Base module not found! Please add one of type `torch.nn.Linear` first using `add_base_module()`.'
             assert len(self.adapter_parameters) > 0, 'Adapter not found! Please create one using `build_new_adapter()` first.'
