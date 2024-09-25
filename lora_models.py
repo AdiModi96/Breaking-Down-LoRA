@@ -1,6 +1,6 @@
 import re
 from torch import nn, Tensor
-from lora_modules import LoRALinear
+from lora_modules import LoRALinear, LoRAConv2d
 
 
 class LoRAModel(nn.Module):
@@ -18,7 +18,12 @@ class LoRAModel(nn.Module):
             for module_name, module in self.base_model.named_modules():
                 if re.match(target_module_name, module_name):
                     self.lora_module_names.append(module_name)
-                    lora_module = LoRALinear(module, config)
+                    if isinstance(module, nn.Linear):
+                        lora_module = LoRALinear(module, config)
+                    elif isinstance(module, nn.Conv2d):
+                        lora_module = LoRAConv2d(module, config)
+                    else:
+                        raise AssertionError('Invalid Target Module Type! Supported Modules: Linear, Conv2d')
                     setattr(self.base_model, module_name, lora_module)
 
     # Sets inference state, forward pass happens through base_model + adapter
@@ -41,7 +46,7 @@ class LoRAModel(nn.Module):
             if module_name in self.lora_module_names:
                 setattr(merged_model, module_name, getattr(self.base_model, module_name).get_merged_module())
             else:
-                setattr(merged_model, module_name, module)
+                setattr(merged_model, module_name, getattr(self.base_model, module_name))
 
         return merged_model
 
