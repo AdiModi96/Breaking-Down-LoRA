@@ -69,6 +69,7 @@ class LoRALinear(nn.Module):
         else:
             self.register_parameter('delta_bias', None)
             self.register_buffer('beta', None)
+
         # Resetting/initializing trainable parameters: delta_weight_A, delta_weight_B, delta_bias (optional)
         self.reset_trainable_parameters()
 
