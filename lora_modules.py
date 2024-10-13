@@ -72,9 +72,6 @@ class LoRALinear(nn.Module):
 
         # Resetting/initializing trainable parameters: delta_weight_A, delta_weight_B, delta_bias (optional)
         self.reset_trainable_parameters()
-
-        # Resetting/initializing trainable parameters: delta_weight_A, delta_weight_B, delta_bias (optional)
-        self.reset_trainable_parameters()
         self.adapter_enabled = False  # Controls the inferencing, "base" or "base + adapter"
 
     # Resetting/initializing trainable parameters: delta_weight_A, delta_weight_B, delta_bias (optional)
