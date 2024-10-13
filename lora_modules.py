@@ -54,7 +54,7 @@ class LoRALinear(nn.Module):
             self.delta_bias = nn.Parameter(
                 torch.empty(
                     size=self.base_module.bias.size() if base_module_bias_available else (out_features,),
-                    dtype=self.base_module.bias.dtype if base_module_bias_available else (out_features,),
+                    dtype=self.base_module.bias.dtype if base_module_bias_available else self.base_module.weight.dtype,
                     device=self.base_module.bias.device if base_module_bias_available else self.base_module.weight.device
                 )
             )
@@ -79,9 +79,10 @@ class LoRALinear(nn.Module):
         nn.init.kaiming_uniform_(self.delta_weight_A, a=5 ** 0.5)
         nn.init.kaiming_uniform_(self.delta_weight_B, a=5 ** 0.5)
         if self.delta_bias is not None:
-            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
-            bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
-            nn.init.uniform_(self.delta_bias, -bound, bound)
+            # fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
+            # bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
+            # nn.init.uniform_(self.delta_bias, -bound, bound)
+            self.delta_bias.data = torch.zeros_like(self.delta_bias.data)
 
     # Sets inference state, forward pass happens through base_module + adapter
     def enable_adapter(self) -> None:
@@ -195,7 +196,7 @@ class LoRAConv1d(nn.Module):
             self.delta_bias = nn.Parameter(
                 torch.empty(
                     size=self.base_module.bias.size() if base_module_bias_available else (out_channels,),
-                    dtype=self.base_module.bias.dtype if base_module_bias_available else (out_channels,),
+                    dtype=self.base_module.bias.dtype if base_module_bias_available else self.base_module.weight.dtype,
                     device=self.base_module.bias.device if base_module_bias_available else self.base_module.weight.device
                 )
             )
@@ -220,9 +221,10 @@ class LoRAConv1d(nn.Module):
         nn.init.kaiming_uniform_(self.delta_weight_A, a=5 ** 0.5)
         nn.init.kaiming_uniform_(self.delta_weight_B, a=5 ** 0.5)
         if self.delta_bias is not None:
-            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
-            bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
-            nn.init.uniform_(self.delta_bias, -bound, bound)
+            # fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
+            # bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
+            # nn.init.uniform_(self.delta_bias, -bound, bound)
+            self.delta_bias.data = torch.zeros_like(self.delta_bias.data)
 
     # Sets inference state, forward pass happens through base_module + adapter
     def enable_adapter(self) -> None:
@@ -375,7 +377,7 @@ class LoRAConv2d(nn.Module):
             self.delta_bias = nn.Parameter(
                 torch.empty(
                     size=self.base_module.bias.size() if base_module_bias_available else (out_channels,),
-                    dtype=self.base_module.bias.dtype if base_module_bias_available else (out_channels,),
+                    dtype=self.base_module.bias.dtype if base_module_bias_available else self.base_module.weight.dtype,
                     device=self.base_module.bias.device if base_module_bias_available else self.base_module.weight.device
                 )
             )
@@ -400,9 +402,10 @@ class LoRAConv2d(nn.Module):
         nn.init.kaiming_uniform_(self.delta_weight_A, a=5 ** 0.5)
         nn.init.kaiming_uniform_(self.delta_weight_B, a=5 ** 0.5)
         if self.delta_bias is not None:
-            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
-            bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
-            nn.init.uniform_(self.delta_bias, -bound, bound)
+            # fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
+            # bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
+            # nn.init.uniform_(self.delta_bias, -bound, bound)
+            self.delta_bias.data = torch.zeros_like(self.delta_bias.data)
 
     # Sets inference state, forward pass happens through base_module + adapter
     def enable_adapter(self) -> None:
@@ -545,7 +548,7 @@ class LoRAConv3d(nn.Module):
             self.delta_bias = nn.Parameter(
                 torch.empty(
                     size=self.base_module.bias.size() if base_module_bias_available else (out_channels,),
-                    dtype=self.base_module.bias.dtype if base_module_bias_available else (out_channels,),
+                    dtype=self.base_module.bias.dtype if base_module_bias_available else self.base_module.weight.dtype,
                     device=self.base_module.bias.device if base_module_bias_available else self.base_module.weight.device
                 )
             )
@@ -570,9 +573,10 @@ class LoRAConv3d(nn.Module):
         nn.init.kaiming_uniform_(self.delta_weight_A, a=5 ** 0.5)
         nn.init.kaiming_uniform_(self.delta_weight_B, a=5 ** 0.5)
         if self.delta_bias is not None:
-            fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
-            bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
-            nn.init.uniform_(self.delta_bias, -bound, bound)
+            # fan_in, fan_out = nn.init._calculate_fan_in_and_fan_out(self.base_module.weight)
+            # bound = 1 / (fan_in ** 0.5) if fan_in > 0 else 0
+            # nn.init.uniform_(self.delta_bias, -bound, bound)
+            self.delta_bias.data = torch.zeros_like(self.delta_bias.data)
 
     # Sets inference state, forward pass happens through base_module + adapter
     def enable_adapter(self) -> None:
