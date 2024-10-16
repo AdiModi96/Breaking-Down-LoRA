@@ -133,6 +133,7 @@ class LoRALinear(nn.Module):
 
         return F.linear(x, weight=effective_weight, bias=effective_bias)
 
+    # Modify the representation string to include LoRA parameters
     def __repr__(self) -> str:
         out_features, rank = self.delta_weight_A.size()
         rank, in_features = self.delta_weight_B.size()
@@ -295,6 +296,7 @@ class LoRAConv1d(nn.Module):
             groups=self.base_module.groups
         )
 
+    # Modify the representation string to include LoRA parameters
     def __repr__(self) -> str:
         out_channels, in_channels, kW = self.base_module.weight.size()
 
@@ -482,6 +484,7 @@ class LoRAConv2d(nn.Module):
             groups=self.base_module.groups
         )
 
+    # Modify the representation string to include LoRA parameters
     def __repr__(self) -> str:
         out_channels, in_channels, kH, kW = self.base_module.weight.size()
 
@@ -647,6 +650,7 @@ class LoRAConv3d(nn.Module):
             groups=self.base_module.groups
         )
 
+    # Modify the representation string to include LoRA parameters
     def __repr__(self) -> str:
         out_channels, in_channels, kT, kH, kW = self.base_module.weight.size()
 

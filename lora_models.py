@@ -1,6 +1,6 @@
 import re
 from torch import nn, Tensor
-from lora_modules import LoRALinear, LoRAConv2d
+from lora_modules import LoRALinear, LoRAConv1d, LoRAConv2d, LoRAConv3d
 
 
 class LoRAModel(nn.Module):
@@ -20,10 +20,14 @@ class LoRAModel(nn.Module):
                     self.lora_module_names.append(module_name)
                     if isinstance(module, nn.Linear):
                         lora_module = LoRALinear(module, config)
+                    elif isinstance(module, nn.Conv1d):
+                        lora_module = LoRAConv1d(module, config)
                     elif isinstance(module, nn.Conv2d):
                         lora_module = LoRAConv2d(module, config)
+                    elif isinstance(module, nn.Conv3d):
+                        lora_module = LoRAConv3d(module, config)
                     else:
-                        raise AssertionError('Invalid Target Module Type! Supported Modules: Linear, Conv2d')
+                        raise AssertionError('Invalid Target Module Type! Supported Modules: Linear, Conv1d, Conv2d, Conv3d')
                     setattr(self.base_model, module_name, lora_module)
 
     # Sets inference state, forward pass happens through base_model + adapter
